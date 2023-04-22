@@ -141,7 +141,13 @@ export default function Home() {
 
       <div className="pt-28 flex flex-row justify-center">
         
-        
+        <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilFoam') }>
+            <div className = {`relative ${selectedProduct === 'MinoxidilFoam' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
+                <img src='https://i.ibb.co/BzrwVRT/imagesss.png' style = {styles.image}/>
+                <div className="innertext text-[#aeb7d7] text-xl bottom-12 left-[90px] absolute"> Foam</div>
+            </div>
+        </button>
+
         
 
         <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilSolution') } className = "ml-36 mr-36 relative">
