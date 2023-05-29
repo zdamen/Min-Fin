@@ -193,33 +193,26 @@ const AuthenticationButton = () => {
     </div>
 
 
-      <div className="pt-28 flex flex-row justify-center">
-        
-        <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilFoam') }>
-            <div className = {`relative ${selectedProduct === 'MinoxidilFoam' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
-                <img src='https://i.ibb.co/BzrwVRT/imagesss.png' style = {styles.image}/>
-                <div className="innertext text-[#aeb7d7] text-xl bottom-12 left-[90px] absolute"> Foam</div>
+    <div class="pt-28 flex flex-col md:flex-row justify-center items-center">
+        <button style={{ ...styles.productType }} onClick={() => handleProductClick('MinoxidilFoam')} className="m-4 content-start">
+            <div className={` ${selectedProduct === 'MinoxidilFoam' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
+              <img src='https://i.ibb.co/SX0smrX/Foam.png' style={styles.image} />
             </div>
-        </button>
+          </button>
 
-        
-
-        
-
-        <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilSolution') } className = "ml-36 mr-36 relative">
-            <div className = {`relative ${selectedProduct === 'MinoxidilSolution' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
-                <img src='https://i.ibb.co/BzrwVRT/imagesss.png' style = {styles.image}/>
-                <div className="innertext text-[#aeb7d7] text-xl bottom-12 left-[80px] absolute "> Solution</div>
+          <button style={{ ...styles.productType }} onClick={() => handleProductClick('MinoxidilSolution')}  className="m-4">
+            <div className={` ${selectedProduct === 'MinoxidilSolution' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
+              <img src='https://i.ibb.co/gMdD3QC/Solution.png' style={styles.image} />
             </div>
-        </button>
+          </button>
 
-        <button style={{...styles.productType}} onClick={() => handleProductClick('Finasteride') }>
-            <div className = {`relative ${selectedProduct === 'Finasteride' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
-                <img src='https://i.ibb.co/KmWMDWb/Finasteride-1.png' style = {styles.image}/>  
+          <button style={{ ...styles.productType }} onClick={() => handleProductClick('Finasteride')}  className="m-4">
+            <div className={`${selectedProduct === 'Finasteride' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
+              <img src='https://i.ibb.co/KmWMDWb/Finasteride-1.png' style={styles.image} />
             </div>
-        </button>
+          </button>
+        </div>
 
-      </div>
 
       
 
