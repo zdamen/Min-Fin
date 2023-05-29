@@ -187,7 +187,7 @@ const AuthenticationButton = () => {
       </div>
       
 
-          <div className="flex justify-center pt-8">
+          
           <div className="flex justify-center pt-8">
     <img src="https://i.ibb.co/6HjLbhS/30994969970-2.png" className="w-80 h-40 object-contain "/>
     </div>
