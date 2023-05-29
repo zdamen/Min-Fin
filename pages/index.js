@@ -1,9 +1,47 @@
 import TableRow from "@/components/TableRow";
-import Kirkland from "@/components/kirkland";
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
+import Profile from "@/components/Profile";
+import FeedbackForm from "@/components/FeedbackForm";
+
 
 
 export default function Home() {
+  
+
+
+    const [selectedProduct, setSelectedProduct] = useState('MinoxidilFoam');
+
+    const handleProductClick = (product) => {
+      setSelectedProduct(product);
+    };
+
+// Creating a login button component.
+    const LoginButton = () => {
+      const { loginWithRedirect } = useAuth0();
+      
+      return <button onClick={loginWithRedirect}
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded "
+      >Login</button>
+    };
+
+    // Creating a logout button component.
+    const LogoutButton = () => {
+      const { logout } = useAuth0();
+  
+  return <button onClick={() => logout({ returnTo: window.location.origin })}
+  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+  >Logout</button>
+};
+
+
+// Creating a authentication button that switches between login and logout button based on authentication state.
+const AuthenticationButton = () => {
+  const { isAuthenticated } = useAuth0();
+  
+  return !isAuthenticated ? <LoginButton /> : null;
+};
+
 
 // get the first 2 significant digits
     function twoDigits(num) {
@@ -31,7 +69,9 @@ export default function Home() {
 
       function renderTableRows(selectedProduct) {
         //get category
+       
         const productData = data[selectedProduct];
+   
 
         return productData.map(([brand, [price, link]]) => {
           // Initialize the props for each TableRow component
@@ -51,9 +91,11 @@ export default function Home() {
         // found entry is either [['KirklandCostco', [8.3, 'https://www.costco.com/CatalogSearch?dept=All&keyword=Kirkland+Signature+Hair+Regrowth+Treatment+']], or undefined
             let price = foundEntry? foundEntry[1][0] : ''   
             rowProps[key+'Price'] = foundEntry? twoDigits(price) : ''
-            rowProps[key+'Link'] = foundEntry? foundEntry[1][1] : null
+            rowProps[key+'Link'] = foundEntry? foundEntry[1][1]: null
+           
+
           } 
-      
+          
           return <TableRow key={brand} {...rowProps} />;
         });
       }
@@ -70,128 +112,10 @@ export default function Home() {
         Roman: 'https://i.ibb.co/fY42KJc/RoLogo.png',
       };
 
-      
-  const data = {
-    "MinoxidilFoam": [
-        [
-            "KirklandCostco",
-            [
-                8.331666666666667,
-                "https://www.costco.com/CatalogSearch?dept=All&keyword=Kirkland+Signature+Hair+Regrowth+Treatment+"
-            ]
-        ],
-        [
-            "Keeps",
-            [
-                11.1,
-                "https://www.keeps.com/our-products"
-            ]
-        ],
-        [
-            "Rogain",
-            [
-                17.333333333333332,
-                "https://www.amazon.com/Rogaine-Minoxidil-Regrowth-Treatment-Thinning/dp/B0012BNVE8/"
-            ]
-        ],
-        [
-            "Hims",
-            [
-                20.0,
-                "https://www.forhims.com/hair-loss/minoxidil-foam"
-            ]
-        ]
-    ],
-    "MinoxidilSolution": [
-        [
-            "KirklandCostco",
-            [
-                2.998333333333333,
-                "https://www.costco.com/CatalogSearch?dept=All&keyword=Kirkland+Signature+Hair+Regrowth+Treatment+"
-            ]
-        ],
-        [
-            "Keeps",
-            [
-                7.333333333333333,
-                "https://www.keeps.com/our-products"
-            ]
-        ],
-        [
-            "Rogain",
-            [
-                11.553333333333333,
-                "https://www.amazon.com/Rogaine-Strength-Minoxidil-Solution-Treatment/dp/B0000Y8H3S/"
-            ]
-        ],
-        [
-            "Hims",
-            [
-                15.0,
-                "https://www.forhims.com/hair-loss/minoxidil"
-            ]
-        ],
-        [
-            "Roman",
-            [
-                16.0,
-                "https://ro.co/hair-loss/"
-            ]
-        ],
-        [
-            "HappyHead",
-            [
-                59.0,
-                "https://www.happyhead.com/products/topical-minoxidil/"
-            ]
-        ]
-    ],
-    "Finasteride": [
-        [
-            "AmazonPharmacy",
-            [
-                13.7,
-                "https://pharmacy.amazon.com/dp/B084BR2Z6S?keywords=Finasteride&qid=1674104225&sr=8-1"
-            ]
-        ],
-        [
-            "Keeps",
-            [
-                16.666666666666668,
-                "https://www.keeps.com/our-products"
-            ]
-        ],
-        [
-            "Roman",
-            [
-                20.0,
-                "https://ro.co/hair-loss/"
-            ]
-        ],
-        [
-            "HappyHead",
-            [
-                24.0,
-                "https://www.happyhead.com/products/oral-finasteride/"
-            ]
-        ],
-        [
-            "Hims",
-            [
-                26.0,
-                "https://www.forhims.com/shop/hair-finasteride"
-            ]
-        ]
-    ]
-}
+
 
   
-    const [selectedProduct, setSelectedProduct] = useState('MinoxidilFoam');
-
-    const handleProductClick = (product) => {
-      setSelectedProduct(product);
-    };
-
+  
     const styles = {
         productType: {
           boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
@@ -210,17 +134,52 @@ export default function Home() {
       
 
       };
+
+
+      const [data, setData] = useState(null);
+      const [isLoading, setIsLoading] = useState(true);
+
+      useEffect(() => {
+        fetch('https://minoxidilscraperapi.azurewebsites.net/GetPrices')
+          .then((response) => response.json())
+          .then((data) => {
+            setData(data);
+            setIsLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error fetching data:', error);
+            setIsLoading(false);
+          });
+      }, []);
+    
+      if (isLoading) {
+        return <div>Loading...</div>;
+      }
+    
+      if (!data) {
+        return <div>Error: No data retrieved</div>;
+      }
+    
+      return (
+        <>
+        
+         <Auth0Provider
+      domain= {process.env.NEXT_PUBLIC_AUTH0_Domain}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+      redirectUri={window.location.origin}
+    >
+      
+      <div className="absolute top-4 right-4 flex flex-row">
+        <AuthenticationButton />
+        <Profile />
+
+      </div>
       
 
-  
-
-  return (
-    <>
-
-    <div className="flex justify-center pt-8">
+          <div className="flex justify-center pt-8">
     <img src="https://i.ibb.co/6HjLbhS/30994969970-2.png" className="w-80 h-40 object-contain "/>
     </div>
-   
+
       <div className="pt-28 flex flex-row justify-center">
         
         <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilFoam') }>
@@ -229,6 +188,8 @@ export default function Home() {
                 <div className="innertext text-[#aeb7d7] text-xl bottom-12 left-[90px] absolute"> Foam</div>
             </div>
         </button>
+
+        
 
         <button style={{...styles.productType}} onClick={() => handleProductClick('MinoxidilSolution') } className = "ml-36 mr-36 relative">
             <div className = {`relative ${selectedProduct === 'MinoxidilSolution' ? 'rounded-[20px] border-4 border-[#465578]' : ''}`}>
@@ -252,14 +213,17 @@ export default function Home() {
     {renderTableRows(selectedProduct)}
        
     </div>
+    <div className="mt-20">
+      <FeedbackForm />
+    </div>    
     
 
 
         <div className="pb-24"></div>
-
-    </>
-
-
-  )
-}
+        </Auth0Provider>
+        </>
+      );
+    };
     
+
+  
