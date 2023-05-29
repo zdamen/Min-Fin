@@ -15,7 +15,7 @@ const FeedbackForm = () => {
             body: JSON.stringify({ feedback }),
             headers: {
                 'Content-Type': 'application/json'
-            }
+            }http://localhost:3000c
         });
 
         if (response.ok) {
