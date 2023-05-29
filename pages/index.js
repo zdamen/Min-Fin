@@ -6,6 +6,7 @@ import FeedbackForm from "@/components/FeedbackForm";
 
 
 
+
 export default function Home() {
   
 
@@ -70,7 +71,10 @@ const AuthenticationButton = () => {
       function renderTableRows(selectedProduct) {
         //get category
        
+       
         const productData = data[selectedProduct];
+   
+
    
 
         return productData.map(([brand, [price, link]]) => {
@@ -94,7 +98,11 @@ const AuthenticationButton = () => {
             rowProps[key+'Link'] = foundEntry? foundEntry[1][1]: null
            
 
+            rowProps[key+'Link'] = foundEntry? foundEntry[1][1]: null
+           
+
           } 
+          
           
           return <TableRow key={brand} {...rowProps} />;
         });
@@ -114,6 +122,8 @@ const AuthenticationButton = () => {
 
 
 
+
+  
   
   
     const styles = {
@@ -134,6 +144,7 @@ const AuthenticationButton = () => {
       
 
       };
+
 
 
       const [data, setData] = useState(null);
@@ -177,8 +188,10 @@ const AuthenticationButton = () => {
       
 
           <div className="flex justify-center pt-8">
+          <div className="flex justify-center pt-8">
     <img src="https://i.ibb.co/6HjLbhS/30994969970-2.png" className="w-80 h-40 object-contain "/>
     </div>
+
 
       <div className="pt-28 flex flex-row justify-center">
         
@@ -188,6 +201,8 @@ const AuthenticationButton = () => {
                 <div className="innertext text-[#aeb7d7] text-xl bottom-12 left-[90px] absolute"> Foam</div>
             </div>
         </button>
+
+        
 
         
 
@@ -226,4 +241,5 @@ const AuthenticationButton = () => {
     };
     
 
+  
   
